@@ -1,0 +1,105 @@
+/**
+ * @file captcha-validator.js
+ * @description A component that prompts the user to solve a captcha in a modal.
+ * It uses TosinsoModal and TosinsoFormBuilder and communicates with server
+ * endpoints for generating and validating captcha challenges.
+ * @author Hossein Ahmadi (Gemini)
+ * @version 1.0.0
+ */
+
+class TosinsoCaptchaValidator {
+
+    /**
+     * Creates and shows a captcha validator inside a modal.
+     * @param {object} options - Configuration options for the validation process.
+     * @param {string} [options.title='تایید هویت'] - The title for the modal.
+     * @param {string} [options.description='برای ادامه، لطفا کد امنیتی زیر را وارد کنید.'] - A message to show the user.
+     * @param {number} [options.captchaLength=5] - The length of the captcha code.
+     * @returns {Promise<string>} A promise that resolves with the verified captcha code on success,
+     * or rejects with an error message on failure/cancellation.
+     */
+    static prompt(options = {}) {
+        return new Promise((resolve, reject) => {
+            // Check for dependencies
+            if (typeof TosinsoModal === 'undefined' || typeof TosinsoFormBuilder === 'undefined') {
+                const errorMsg = 'TosinsoModal or TosinsoFormBuilder component is not loaded.';
+                console.error(errorMsg);
+                reject(errorMsg);
+                return;
+            }
+
+            // Create a container for the form builder
+            const modalContent = document.createElement('form');
+            
+            let captchaModal = null; // To hold the modal instance
+
+            // Create the modal instance
+            captchaModal = new TosinsoModal({
+                title: options.title || 'تایید هویت',
+                content: modalContent,
+                size: 'auto', // Let the modal size itself to the form content
+                closeButton: false, // User must interact with form buttons
+                closeOnOverlayClick: false,
+                confirmButton: { text: null }, // Hide default buttons
+                cancelButton: { text: null },
+                onClose: () => {
+                    // This will be called if the modal is closed programmatically
+                    // We reject the promise to indicate cancellation
+                    reject('Verification cancelled.');
+                }
+            });
+
+            // Use FormBuilder to create the captcha form inside the modal content
+            new TosinsoFormBuilder(modalContent)
+                .addField({
+                    type: 'htmlContent',
+                    html: `<p style="text-align: center; margin-bottom: 20px;">${options.description || 'برای ادامه، لطفا کد امنیتی زیر را وارد کنید.'}</p>`
+                })
+                .addField({
+                    type: 'captcha',
+                    name: 'captcha_code',
+                    label: '', // Label is handled by the description
+                    captchaLength: options.captchaLength || 5,
+                    validation: { rules: ['required'] }
+                })
+                .withActions([
+                    {
+                        type: 'button',
+                        text: 'انصراف',
+                        className: 'btn btn-secondary',
+                        onClick: () => {
+                            if (captchaModal) {
+                                captchaModal.close(); // This will trigger the onClose callback and reject the promise
+                            }
+                        }
+                    },
+                    {
+                        type: 'submit',
+                        text: 'تایید و ادامه'
+                    }
+                ])
+                .onSubmit(async (formData) => {
+                    // This function is only called if the captcha field's async validation is successful
+                    const verifiedCode = formData.captcha_code;
+                    console.log('Captcha validated successfully. Code:', verifiedCode);
+
+                    // Show a success toast
+                    if (typeof showToast === 'function') {
+                        showToast({ message: 'کد امنیتی با موفقیت تایید شد.', type: 'success' });
+                    }
+                    
+                    // Close the modal
+                    if (captchaModal) {
+                        captchaModal.close();
+                    }
+                    
+                    // Resolve the promise with the verified code
+                    resolve(verifiedCode);
+                })
+                .build();
+
+            // Open the modal to show the form
+            captchaModal.open();
+        });
+    }
+}

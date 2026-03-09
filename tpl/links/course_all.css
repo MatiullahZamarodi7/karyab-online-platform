@@ -1,0 +1,303 @@
+/* ==============================================
+          All Network Courses Page Specific Styles
+          ============================================== */
+
+body {
+    background-color: #f8f9fa;
+    color: #161616b0;
+}
+
+/* --- Page Header (Hero) --- */
+.page-header-simple {
+    padding: 60px 0;
+    background: linear-gradient(135deg, #1A73E8 0%, #34A853 100%); /* Adjusted gradient for category feel */
+    color: #ffffff;
+    text-align: center;
+}
+
+    .page-header-simple h1 {
+        font-family: 'PinarBold', sans-serif;
+        font-size: 2.8rem;
+        color: #ffffff;
+        margin-bottom: 10px;
+        text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+
+    .page-header-simple p {
+        font-size: 1.1rem;
+        color: #ffffff;
+        opacity: 0.9;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+/* --- Main Layout --- */
+.page-content-wrapper {
+    padding: 40px 0;
+}
+
+.course-list-container {
+    display: block;
+}
+
+/* --- MODIFIED: Filter & Sort Bar with View Switcher --- */
+.filter-sort-bar {
+    background-color: var(--component-bg-color);
+    border: 1px solid var(--medium-gray-color);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.sort-and-view-controls {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-shrink: 0;
+}
+
+.filter-group, .sort-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+    .filter-group label, .sort-group label {
+        font-weight: 600;
+        color: var(--dark-gray-color);
+        font-size: 15px;
+    }
+
+.filter-sort-bar .form-control {
+    height: 42px;
+    padding: 0 15px;
+    border-radius: var(--border-radius);
+    font-size: 14px;
+    min-width: 150px;
+}
+
+.filter-sort-bar .tosinso-dropdown {
+    min-width: 180px;
+}
+
+    .filter-sort-bar .tosinso-dropdown .tosinso-dropdown__trigger {
+        height: 42px;
+    }
+
+.filter-sort-bar .global-search-input {
+    flex-grow: 1; /* Allows search input to take available space */
+    min-width: 250px;
+    position: relative;
+}
+
+    .filter-sort-bar .global-search-input .form-control {
+        width: 100%;
+        padding-right: 40px; /* Space for search icon */
+    }
+
+    .filter-sort-bar .global-search-input .search-icon {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--dark-gray-color);
+        font-size: 1.1rem;
+    }
+
+.view-switcher {
+    display: flex;
+    background-color: var(--light-gray-color);
+    border-radius: var(--border-radius);
+    padding: 5px;
+}
+
+    .view-switcher .view-btn {
+        background: none;
+        border: none;
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+        color: var(--dark-gray-color);
+        cursor: pointer;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+    }
+
+        .view-switcher .view-btn.active {
+            background-color: #fff;
+            color: var(--primary-color);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+/* --- MODIFIED: Course Grid (Requirement 3) --- */
+.course-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns on desktop */
+    gap: 25px;
+    position: relative;
+    min-height: 300px;
+}
+
+/* --- CORRECTED: View Toggling Logic --- */
+/* This section controls which container (grid or list) is visible */
+.view-grid .course-grid {
+    display: grid;
+}
+
+.view-grid .course-list-display {
+    display: none;
+}
+
+.view-list .course-grid {
+    display: none;
+}
+
+.view-list .course-list-display {
+    display: flex;
+}
+
+
+/* --- Sidebar Widgets --- */
+.sidebar-widget {
+    background-color: var(--component-bg-color);
+    border: 1px solid var(--medium-gray-color);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.widget-title {
+    font-family: 'PinarBold', sans-serif;
+    font-size: 1.3rem;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.category-list, .featured-posts-list {
+    list-style: none;
+}
+
+    .category-list li a {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 5px;
+        border-bottom: 1px solid var(--light-gray-color);
+        color: var(--dark-gray-color);
+    }
+
+        .category-list li a:hover {
+            color: var(--primary-color);
+        }
+
+.category-count-badge {
+    background-color: var(--medium-gray-color);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 12px;
+}
+
+.featured-course-item {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+    .featured-course-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .featured-course-item img {
+        width: 70px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 5px;
+        flex-shrink: 0;
+    }
+
+    .featured-course-item .course-title-small {
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.5;
+    }
+
+.ad-widget img {
+    width: 100%;
+    border-radius: var(--border-radius);
+}
+
+.pagination-container {
+    padding: 20px 0;
+    margin-top: 20px;
+}
+
+.no-courses-message {
+    text-align: center;
+    padding: 50px;
+    width: 100%;
+    color: var(--dark-gray-color);
+}
+
+    .no-courses-message i {
+        font-size: 3rem;
+        margin-bottom: 15px;
+        opacity: 0.5;
+    }
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 992px) {
+    .course-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns on tablet */
+    }
+}
+
+@media (max-width: 768px) {
+    .page-header-simple h1 {
+        font-size: 2.2rem;
+    }
+
+    .filter-sort-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .sort-and-view-controls {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .filter-sort-bar .form-control,
+    .filter-sort-bar .tosinso-dropdown {
+        width: 100%;
+        min-width: auto;
+    }
+
+    .course-grid {
+        grid-template-columns: 1fr;
+    }
+    /* Stack course cards */
+    .course-list-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .course-list-item__image-container {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 9;
+        margin-bottom: 15px;
+    }
+
+    .course-list-item__actions {
+        width: 100%;
+        text-align: center;
+        margin-top: 15px;
+        align-items: center;
+    }
+}

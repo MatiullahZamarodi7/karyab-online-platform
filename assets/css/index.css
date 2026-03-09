@@ -1,0 +1,183 @@
+
+
+body{
+    background-color: var(--body-bg-color);
+    
+}
+
+
+
+
+
+
+/* --- General Section Styling --- */
+.page-section {
+    padding: 60px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+    .section-title h2 {
+        font-family: 'PinarBold', sans-serif;
+        font-size: 2.2rem;
+        /* color: var(--text-color); */
+        margin-bottom: 10px;
+    }
+
+    .section-title p {
+        font-size: 1.1rem;
+        color: var(--dark-gray-color);
+        max-width: 700px;
+        margin: 0 auto;
+        line-height: 1.8;
+    }
+
+    .section-title.text-right {
+        text-align: right;
+    }
+
+        .section-title.text-right h2::after {
+            right: auto;
+            left: 0;
+            transform: none;
+        }
+
+/* --- About Category Section --- */
+.about-category-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.about-category-text h3 {
+    font-family: 'PinarBold', sans-serif;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+.about-category-text p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--dark-gray-color);
+    margin-bottom: 20px;
+    text-align: justify;
+}
+
+.about-category-text ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+    .about-category-text ul li {
+        font-size: 1rem;
+        color: var(--text-color);
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+    }
+
+        .about-category-text ul li i {
+            margin-left: 10px;
+            color: var(--success-color);
+        }
+
+.about-category-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+/* --- Stats Section (Reused from About Us) --- */
+.stats-section {
+    background-color: var(--light-gray-color);
+}
+
+.category-numbers-card {
+    background-color: var(--component-bg-color);
+    background-color: red;
+
+    border: 1px solid var(--medium-gray-color);
+    border-radius: var(--border-radius);
+    padding: 40px;
+}
+
+    .category-numbers-card .numbers-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 30px;
+    }
+
+    .category-numbers-card .number-item {
+        text-align: center;
+    }
+
+        .category-numbers-card .number-item .svg-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+    .category-numbers-card .number-item-value {
+        font-family: 'PinarBold', sans-serif;
+        font-size: 2.8rem;
+        color: var(--text-color);
+    }
+
+    .category-numbers-card .number-item-label {
+        font-size: 1.1rem;
+        color: var(--dark-gray-color);
+    }
+
+    .category-numbers-card .number-item-description {
+        font-size: 0.9rem;
+        color: var(--dark-gray-color);
+        margin-top: 5px;
+        line-height: 1.5;
+    }
+
+/* --- Subcategories/Key Skills Section --- */
+/* MODIFIED: Changed grid to display max 3 items per row on desktop */
+.subcategories-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.subcategory-card {
+    background-color: var(--component-bg-color);
+    border-radius: var(--border-radius);
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid var(--medium-gray-color);
+}
+
+    .subcategory-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--box-shadow);
+    }
+
+    .subcategory-card .icon {
+        font-size: 48px;
+        color: var(--primary-color);
+        margin-bottom: 20px;
+    }
+
+    .subcategory-card h4 {
+        font-family: 'PinarBold', sans-serif;
+        font-size: 1.3rem;
+        margin-bottom: 10px;
+    }
+
+    .subcategory-card p {
+        font-size: 0.95rem;
+        color: var(--dark-gray-color);
+        line-height: 1.7;
+    }

@@ -1,0 +1,833 @@
+/* ==============================================
+          Category Landing Page Specific Styles
+          ============================================== */
+
+body {
+    background-color: var(--body-bg-color);
+}
+
+/* --- Page Header (Hero) --- */
+.category-hero {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #1A73E8 0%, #34A853 100%); /* Adjusted gradient for category feel */
+    color: #ffffff;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+    .category-hero h1 {
+        font-family: 'PinarBold', sans-serif;
+        font-size: 3.2rem;
+        color: #ffffff;
+        margin-bottom: 15px;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .category-hero p {
+        font-size: 1.2rem;
+        opacity: 0.95;
+        max-width: 800px;
+        margin: 0 auto 30px;
+    }
+
+    /* MODIFIED: Increased button size and applied glassmorphism effect */
+    .category-hero .hero-cta-buttons .btn {
+        margin: 0 10px;
+        padding: 30px 40px; /* Increased padding to make buttons larger */
+        font-size: 1.1rem; /* Adjusted font size */
+        border-radius: 16px; /* Rounded corners for a modern look */
+        transition: all 0.3s ease;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        min-width: 220px; /* Set a min-width for consistency */
+    }
+
+    /* Styles for the main solid button */
+    .category-hero .hero-cta-buttons .btn-primary {
+        background-color: #fff;
+        color: var(--primary-color);
+        border: 1px solid #fff;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+
+        .category-hero .hero-cta-buttons .btn-primary:hover {
+            background-color: #f0f0f0;
+            color: var(--primary-hover-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+        }
+
+    /* Glassmorphism effect for the outline button */
+    .category-hero .hero-cta-buttons .btn-outline-secondary {
+        background: rgba(255, 255, 255, 0.2); /* Semi-transparent background */
+        backdrop-filter: blur(5px); /* The main blur effect */
+        -webkit-backdrop-filter: blur(5px); /* For Safari browser compatibility */
+        border: 1px solid rgba(255, 255, 255, 0.3); /* A light border to define the edge */
+        color: #fff;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+        .category-hero .hero-cta-buttons .btn-outline-secondary:hover {
+            background: rgba(255, 255, 255, 0.35); /* Slightly more opaque on hover */
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+        }
+
+/* --- General Section Styling --- */
+.page-section {
+    padding: 60px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+    .section-title h2 {
+        font-family: 'PinarBold', sans-serif;
+        font-size: 2.2rem;
+        color: var(--text-color);
+        margin-bottom: 10px;
+    }
+
+    .section-title p {
+        font-size: 1.1rem;
+        color: var(--dark-gray-color);
+        max-width: 700px;
+        margin: 0 auto;
+        line-height: 1.8;
+    }
+
+    .section-title.text-right {
+        text-align: right;
+    }
+
+        .section-title.text-right h2::after {
+            right: auto;
+            left: 0;
+            transform: none;
+        }
+
+/* --- About Category Section --- */
+.about-category-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.about-category-text h3 {
+    font-family: 'PinarBold', sans-serif;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+.about-category-text p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--dark-gray-color);
+    margin-bottom: 20px;
+    text-align: justify;
+}
+
+.about-category-text ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+    .about-category-text ul li {
+        font-size: 1rem;
+        color: var(--text-color);
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+    }
+
+        .about-category-text ul li i {
+            margin-left: 10px;
+            color: var(--success-color);
+        }
+
+.about-category-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+/* --- Stats Section (Reused from About Us) --- */
+.stats-section {
+    background-color: var(--light-gray-color);
+}
+
+.category-numbers-card {
+    background-color: var(--component-bg-color);
+    border: 1px solid var(--medium-gray-color);
+    border-radius: var(--border-radius);
+    padding: 40px;
+}
+
+    .category-numbers-card .numbers-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 30px;
+    }
+
+    .category-numbers-card .number-item {
+        text-align: center;
+    }
+
+        .category-numbers-card .number-item .svg-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+    .category-numbers-card .number-item-value {
+        font-family: 'PinarBold', sans-serif;
+        font-size: 2.8rem;
+        color: var(--text-color);
+    }
+
+    .category-numbers-card .number-item-label {
+        font-size: 1.1rem;
+        color: var(--dark-gray-color);
+    }
+
+    .category-numbers-card .number-item-description {
+        font-size: 0.9rem;
+        color: var(--dark-gray-color);
+        margin-top: 5px;
+        line-height: 1.5;
+    }
+    a{
+        color: black;
+    }
+    a:hover{
+        color: black;
+    }
+
+/* --- Subcategories/Key Skills Section --- */
+/* MODIFIED: Changed grid to display max 3 items per row on desktop */
+.subcategories-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+}
+
+.subcategory-card {
+    background-color: var(--component-bg-color);
+    border-radius: var(--border-radius);
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid var(--medium-gray-color);
+}
+
+    .subcategory-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--box-shadow);
+    }
+
+    .subcategory-card .icon {
+        font-size: 48px;
+        color: var(--primary-color);
+        margin-bottom: 20px;
+    }
+
+    .subcategory-card h4 {
+        font-family: 'PinarBold', sans-serif;
+        font-size: 1.3rem;
+        margin-bottom: 10px;
+    }
+
+    .subcategory-card p {
+        font-size: 0.95rem;
+        color: var(--dark-gray-color);
+        line-height: 1.7;
+    }
+
+/* --- Roadmaps Section (Reused from Landing) --- */
+.roadmaps-section {
+    background-color: var(--component-bg-color);
+}
+
+    .roadmaps-section .roadmap-layout-container {
+        display: flex;
+        flex-direction: row-reverse; /* Image next to text */
+        align-items: flex-start; /* Align to top */
+        gap: 32px;
+    }
+
+    .roadmaps-section .roadmap-text-column {
+        flex: 2; /* Text takes more space */
+        padding-left: 48px; /* Spacing for text */
+        text-align: right; /* Align text to right */
+    }
+
+    .roadmaps-section .roadmap-image-column {
+        flex: 1; /* Image takes less space */
+        max-width: 380px;
+        margin-bottom: 0; /* No bottom margin when side-by-side */
+    }
+
+        .roadmaps-section .roadmap-image-column img {
+            width: 100%;
+            height: auto;
+            max-height: 500px;
+            object-fit: contain; /* Use contain to ensure full image is visible */
+            border-radius: var(--border-radius);
+        }
+
+    .roadmaps-section .roadmap-text-column h4 {
+        font-family: 'PinarBold', sans-serif;
+        font-size: 1.25rem;
+        color: var(--dark-gray-color);
+        margin-top: 32px;
+        margin-bottom: 24px;
+        text-align: right;
+    }
+
+    .roadmaps-section .roadmap-text-column p {
+        font-size: 1rem;
+        color: var(--dark-gray-color);
+        max-width: 100%;
+        margin: 0 auto 32px 0;
+        line-height: 1.8;
+    }
+
+    .roadmaps-section .roadmap-samples-list {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+        margin-top: 16px;
+    }
+
+        .roadmaps-section .roadmap-samples-list li {
+            background-color: rgba(26, 115, 232, 0.1);
+            color: #1255A5;
+            padding: 16px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 8px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.06), 0 1px 1px rgba(0,0,0,0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+            .roadmaps-section .roadmap-samples-list li:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 2px 5px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.07);
+            }
+
+            .roadmaps-section .roadmap-samples-list li .svg-icon {
+                width: 20px;
+                height: 20px;
+                font-size: 20px;
+                color: var(--primary-color);
+            }
+
+    .roadmaps-section .roadmap-text-column .all-courses-cta {
+        text-align: right;
+        margin-top: 32px;
+    }
+
+/* --- Course Grid --- */
+/* MODIFIED: Changed grid to display max 3 items per row on desktop */
+.course-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+/* REMOVED: All .course-card styles are now inherited from base.css to avoid duplication */
+
+
+/* --- Instructors Section (Reused from Landing) --- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.instructors-section {
+    background-color: #f1f3f4;
+}
+
+.instructors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 32px;
+}
+
+.instructor-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    text-align: center;
+    padding: 32px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06), 0 1px 1px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex; /* Added for flex properties */
+    flex-direction: column; /* Arrange content vertically */
+}
+
+    .instructor-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.07);
+    }
+
+    .instructor-card img {
+        margin: 0 auto;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 24px;
+        border: 3px solid rgba(26, 115, 232, 0.1);
+    }
+
+    .instructor-card h5 {
+        font-family: 'PinarBold', sans-serif;
+        font-size: 1.25rem;
+        margin-bottom: 8px;
+    }
+
+    .instructor-card .instructor-title {
+        font-size: 0.875rem;
+        color: var(--primary-color);
+        margin-bottom: 16px;
+        font-weight: 500;
+    }
+
+    .instructor-card .instructor-bio {
+        font-size: 0.875rem;
+        color: var(--dark-gray-color);
+        margin-bottom: 24px;
+        min-height: 40px;
+        flex-grow: 1; /* Allow bio to take up available space */
+    }
+
+    .instructor-card .btn {
+        width: 100%; /* Make button full width */
+        margin-top: auto; /* Push button to the bottom */
+    }
+
+.all-instructors-cta {
+    text-align: center;
+    margin-top: 48px;
+}
+
+/* --- Testimonials Section (Reused from Landing) --- */
+.testimonials-section {
+    background-color: #f1f3f4;
+}
+
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 32px;
+}
+
+.testimonial-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.07);
+    display: flex;
+    flex-direction: column;
+}
+
+.testimonial-quote {
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: 24px;
+    font-style: italic;
+    position: relative;
+    padding-right: 32px;
+}
+
+    .testimonial-quote::before {
+        content: "\201C";
+        font-family: Georgia, serif;
+        font-size: 3rem;
+        color: #66A3EF;
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        opacity: 0.8;
+    }
+
+.testimonial-author {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+}
+
+    .testimonial-author img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-left: 24px;
+    }
+
+.testimonial-author-info h6 {
+    font-family: 'PinarBold', sans-serif;
+    font-size: 1rem;
+    margin-bottom: 0;
+}
+
+.testimonial-author-info span {
+    font-size: 0.875rem;
+    color: var(--dark-gray-color);
+}
+
+/* --- FAQ Section (Reused from Contact Us) --- */
+.faq-section {
+    background-color: var(--light-gray-color);
+}
+
+.tosinso-accordion {
+    max-width: 800px;
+    margin: 0 auto;
+}
+/* REMOVED: Old custom FAQ styles are no longer needed */
+
+/* --- Consultation Form Section (Reused from Landing) --- */
+.consultation-form-section {
+    background: linear-gradient(135deg, rgba(26, 115, 232, 0.1) 0%, rgba(52, 168, 83, 0.1) 100%);
+    padding: 48px 0;
+}
+
+.consultation-box {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 0;
+    background-color: var(--component-bg-color);
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.07);
+    overflow: hidden;
+}
+
+.consultation-image-column {
+    flex: 1 1 40%;
+    background-image: url('/images/consult_w550.webp');
+    background-size: cover;
+    background-position: center;
+    min-height: 400px;
+}
+
+.consultation-form-column {
+    flex: 1 1 60%;
+    padding: 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+    .consultation-form-column h3 {
+        font-family: 'PinarBold', sans-serif;
+        font-size: 1.75rem;
+        color: var(--primary-color);
+        margin-bottom: 8px;
+    }
+
+    .consultation-form-column .form-subtitle {
+        font-size: 1rem;
+        color: var(--dark-gray-color);
+        margin-bottom: 32px;
+    }
+
+    .consultation-form-column .btn-primary {
+        width: 100%;
+        padding: 30px;
+        font-size: 1rem;
+    }
+
+/* --- Educational Packages (Reused from Landing) --- */
+.packages-section {
+    background: linear-gradient(135deg, rgba(26, 115, 232, 0.1) 0%, rgba(52, 168, 83, 0.1) 100%);
+}
+
+.packages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 32px;
+}
+
+.package-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.07);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 2px solid transparent;
+    overflow: hidden;
+}
+
+    .package-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.07);
+        border-color: var(--primary-color);
+    }
+
+.package-card-wide-image {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    display: block;
+}
+
+.package-card-header {
+    padding: 24px;
+    text-align: center;
+}
+
+    .package-card-header h4 {
+        font-family: 'PinarBold', sans-serif;
+        font-size: 1.5rem;
+        color: var(--primary-color);
+        margin-bottom: 8px;
+        margin-top: 0;
+    }
+
+    .package-card-header .package-subtitle {
+        font-size: 0.875rem;
+        color: var(--dark-gray-color);
+    }
+
+.package-card-body {
+    padding: 24px;
+    flex-grow: 1;
+}
+
+    .package-card-body ul {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 24px 0;
+    }
+
+        .package-card-body ul li {
+            font-size: 1rem;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+        }
+
+            .package-card-body ul li .svg-icon {
+                color: var(--success-color);
+                width: 18px;
+                height: 18px;
+                font-size: 18px;
+                margin-left: 16px;
+                flex-shrink: 0;
+            }
+
+.package-pricing {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+    .package-pricing .original-price {
+        text-decoration: line-through;
+        color: var(--dark-gray-color);
+        font-size: 1rem;
+        margin-left: 16px;
+    }
+
+    .package-pricing .current-price {
+        font-family: 'PinarBold', sans-serif;
+        font-size: 1.75rem;
+        color: var(--success-color);
+        font-weight: 700;
+    }
+
+    .package-pricing .savings-badge {
+        display: inline-block;
+        background-color: var(--warning-color);
+        color: var(--text-color);
+        padding: 8px 16px;
+        border-radius: 4px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin-top: 8px;
+    }
+
+.package-card-footer {
+    padding: 24px;
+    text-align: center;
+    border-top: 1px solid var(--medium-gray-color);
+}
+
+    .package-card-footer .btn {
+        width: 100%;
+        padding: 30px;
+    }
+
+/* --- Responsive Styles --- */
+@media (max-width: 992px) {
+    .about-category-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .about-category-image {
+        order: -1; /* Move image to top on smaller screens */
+    }
+
+    .roadmaps-section .roadmap-layout-container {
+        flex-direction: column; /* Stack on smaller screens */
+    }
+
+    .roadmaps-section .roadmap-image-column {
+        order: -1; /* Move image to top when stacked */
+    }
+
+    .roadmaps-section .roadmap-text-column {
+        padding-left: 0;
+        text-align: center;
+    }
+
+        .roadmaps-section .roadmap-text-column h4,
+        .roadmaps-section .roadmap-text-column p,
+        .roadmaps-section .roadmap-text-column .all-courses-cta {
+            text-align: center;
+        }
+
+    .consultation-image-column {
+        display: none;
+    }
+
+    .consultation-form-column {
+        flex-basis: 100%;
+        padding: 30px;
+    }
+
+    /* ADDED: Responsive grid for 2 columns on tablets */
+    .subcategories-grid, .course-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .category-hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .section-title h2 {
+        font-size: 2rem;
+    }
+
+    .category-numbers-card .numbers-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    /* MODIFIED: Ensure grids are single column on mobile */
+    .subcategories-grid, .course-grid, .instructors-grid, .testimonials-grid, .packages-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .roadmaps-section .roadmap-samples-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 576px) {
+    .category-hero {
+        padding: 60px 20px;
+    }
+
+        .category-hero h1 {
+            font-size: 2rem;
+        }
+
+        .category-hero p {
+            font-size: 1rem;
+        }
+
+        .category-hero .hero-cta-buttons {
+            flex-direction: column;
+            gap: 15px;
+        }
+
+            .category-hero .hero-cta-buttons .btn {
+                width: 90%;
+                margin: 0 auto;
+            }
+
+                .category-hero .hero-cta-buttons .btn:last-child {
+                    margin-top: 30px;
+                }
+
+    .category-numbers-card .numbers-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .category-numbers-card {
+        padding: 20px;
+    }
+
+    .subcategory-card {
+        padding: 20px;
+    }
+
+    .testimonial-quote {
+        padding-right: 20px;
+    }
+
+        .testimonial-quote::before {
+            font-size: 2.5rem;
+        }
+}

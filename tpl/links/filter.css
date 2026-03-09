@@ -1,0 +1,24 @@
+#filterBtn{
+    background-color:lightgray;
+    z-index: 10;
+    padding: 20px;
+    width: 100%;
+    position: absolute;
+    border-radius: 5px;
+    box-shadow: 0 0 lightgray;
+    margin-top: 0.2rem;
+    display: none;
+}
+
+.btn{
+    margin-top: 10px;
+}
+
+
+/* mobile btn for filter */
+.filter_mobile_btn{
+    position:absolute;
+    height: 50px;
+    top: 29%;
+    right: 60%;
+}

@@ -1,0 +1,208 @@
+/**
+ * @file pagination.js
+ * @description A professional, accessible, and dependency-free pagination component for Tosinso.
+ * @author Hossein Ahmadi (Gemini)
+ * @version 1.0.0
+ */
+class TosinsoPagination {
+        /**
+         * Creates an instance of TosinsoPagination.
+         * @param {HTMLElement} element - The container element for the pagination.
+         * @param {object} options - Optional configuration overrides.
+         */
+        constructor(element, options = {}) {
+                if (!element) {
+                        console.error("TosinsoPagination: Target element not provided.");
+                        return;
+                }
+                this.element = element;
+
+                // Default settings merged with data attributes and external options
+                this.options = {
+                        totalItems: parseInt(this.element.dataset.totalItems, 10) || 0,
+                        pageSize: parseInt(this.element.dataset.pageSize, 10) || 10,
+                        currentPage: parseInt(this.element.dataset.currentPage, 10) || 1,
+                        visiblePages: 5, // How many page numbers to show at once
+                        labelFirst: this.element.dataset.labelFirst || '&laquo;',
+                        labelPrev: this.element.dataset.labelPrev || '&lsaquo;',
+                        labelNext: this.element.dataset.labelNext || '&rsaquo;',
+                        labelLast: this.element.dataset.labelLast || '&raquo;',
+                        showPageInfo: this.element.dataset.showPageInfo ? this.element.dataset.showPageInfo === 'true' : false,
+                        ajaxEnabled: this.element.dataset.ajax ? this.element.dataset.ajax === 'true' : false,
+                        linkTemplate: this.element.dataset.linkTemplate || '?page={page}',
+                };
+
+                Object.assign(this.options, options);
+
+                this.totalPages = Math.ceil(this.options.totalItems / this.options.pageSize);
+
+                this._init();
+        }
+
+	// --- Private Methods ---
+
+	_init() {
+		this._render();
+		this._attachEventListeners();
+		this.element.TosinsoPagination = this; // Attach instance to the element
+	}
+
+        _attachEventListeners() {
+                this.element.addEventListener('click', (e) => {
+                        const target = e.target.closest('a.page-item');
+                        if (!target || target.classList.contains('disabled') || target.classList.contains('active')) {
+                                return;
+                        }
+
+                        if (this.options.ajaxEnabled) {
+                                e.preventDefault();
+                                const newPage = parseInt(target.dataset.page, 10);
+                                if (!isNaN(newPage)) {
+                                        this.goToPage(newPage);
+                                }
+                        }
+                });
+        }
+
+	_render() {
+		// If there's only one page or less, don't render anything
+		if (this.totalPages <= 1) {
+			this.element.innerHTML = '';
+			return;
+		}
+
+		this.element.innerHTML = this._createPaginationHTML();
+	}
+
+	_createPaginationHTML() {
+		const { currentPage } = this.options;
+		const { totalPages } = this;
+
+		let html = '';
+
+		// First and Previous buttons
+		html += this._createButton(this.options.labelFirst, 1, currentPage === 1);
+		html += this._createButton(this.options.labelPrev, currentPage - 1, currentPage === 1);
+
+		// Page number buttons
+		const pages = this._getPagesToShow();
+		pages.forEach(page => {
+			if (page === '...') {
+				html += `<span class="page-item dots">...</span>`;
+			} else {
+				html += this._createButton(page, page, false, page === currentPage);
+			}
+		});
+
+		// Next and Last buttons
+		html += this._createButton(this.options.labelNext, currentPage + 1, currentPage === totalPages);
+		html += this._createButton(this.options.labelLast, totalPages, currentPage === totalPages);
+
+		// Optional page info
+		if (this.options.showPageInfo) {
+			html += `<span class="page-info">صفحه ${currentPage} از ${totalPages}</span>`;
+		}
+
+		return html;
+	}
+
+        _createButton(text, page, isDisabled = false, isActive = false) {
+                if (isDisabled) {
+                        return `<span class="page-item disabled">${text}</span>`;
+                }
+                const activeClass = isActive ? 'active' : '';
+                const ariaCurrent = isActive ? ' aria-current="page"' : '';
+                const href = this._buildLink(page);
+                return `<a href="${href}" class="page-item ${activeClass}" data-page="${page}"${ariaCurrent}>${text}</a>`;
+        }
+
+        _buildLink(page) {
+                const raw = this.options.linkTemplate.replace('{page}', page);
+                if (page === 1) {
+                        const url = new URL(raw, window.location.origin);
+                        url.searchParams.delete('page');
+                        return url.pathname + url.search + url.hash;
+                }
+                return raw;
+        }
+
+	_getPagesToShow() {
+		const { currentPage, visiblePages } = this.options;
+		const { totalPages } = this;
+		
+		if (totalPages <= visiblePages + 2) {
+			return Array.from({ length: totalPages }, (_, i) => i + 1);
+		}
+
+		const pages = [];
+		const half = Math.floor(visiblePages / 2);
+
+		let start = currentPage - half;
+		let end = currentPage + half;
+
+		if (start <= 1) {
+			start = 1;
+			end = visiblePages;
+		}
+		if (end >= totalPages) {
+			end = totalPages;
+			start = totalPages - visiblePages + 1;
+		}
+
+		if (start > 1) {
+			pages.push(1);
+			if (start > 2) {
+				pages.push('...');
+			}
+		}
+
+		for (let i = start; i <= end; i++) {
+			pages.push(i);
+		}
+
+		if (end < totalPages) {
+			if (end < totalPages - 1) {
+				pages.push('...');
+			}
+			pages.push(totalPages);
+		}
+
+		return pages;
+	}
+	
+	// --- Public API ---
+
+	/**
+	 * Navigates to a specific page.
+	 * @param {number} newPage - The page number to navigate to.
+	 */
+	goToPage(newPage) {
+		if (newPage < 1 || newPage > this.totalPages || newPage === this.options.currentPage) {
+			return;
+		}
+		this.options.currentPage = newPage;
+		this._render();
+
+		// Dispatch a custom event to notify other parts of the application
+		const pageChangeEvent = new CustomEvent('pageChanged', {
+			bubbles: true,
+			detail: {
+				newPage: this.options.currentPage,
+				pageSize: this.options.pageSize,
+				totalItems: this.options.totalItems
+			}
+		});
+		this.element.dispatchEvent(pageChangeEvent);
+	}
+
+	// --- Static Initializer ---
+
+	/**
+	 * Automatically initializes all elements with the 'data-tosinso-pagination' attribute.
+	 */
+	static init() {
+		document.querySelectorAll('.tosinso-pagination').forEach(el => {
+			new TosinsoPagination(el);
+		});
+	}
+}

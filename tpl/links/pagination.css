@@ -1,0 +1,66 @@
+/* --- Main Pagination Container --- */
+.tosinso-pagination {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	font-family: 'PinarRegular', sans-serif;
+	user-select: none;
+	text-align: center;
+}
+
+/* --- Individual Page Item (Button) --- */
+.tosinso-pagination .page-item {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 42px;
+	height: 42px;
+	padding: 0 10px;
+	border: 1px solid var(--border-color);
+	border-radius: var(--border-radius);
+	background-color: var(--component-bg-color);
+	color: var(--dark-gray-color);
+	font-size: 15px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	text-decoration: none;
+	margin: 0 8px;
+}
+
+/* --- Hover State --- */
+.tosinso-pagination .page-item:not(.disabled):not(.active):hover {
+	background-color: var(--light-gray-color);
+	border-color: var(--primary-color);
+	color: var(--primary-color);
+}
+
+/* --- Active State --- */
+.tosinso-pagination .page-item.active {
+	background-color: var(--primary-color);
+	border-color: var(--primary-color);
+	color: #fff;
+	cursor: default;
+}
+
+/* --- Disabled State --- */
+.tosinso-pagination .page-item.disabled {
+	opacity: 0.6;
+	cursor: not-allowed;
+	background-color: var(--light-gray-color);
+}
+
+/* --- Ellipsis (...) Item --- */
+.tosinso-pagination .page-item.dots {
+	border: none;
+	background: none;
+	cursor: default;
+}
+
+/* --- Page Info Text --- */
+.tosinso-pagination .page-info {
+	font-size: 14px;
+	color: var(--dark-gray-color);
+	margin: 0 10px;
+}

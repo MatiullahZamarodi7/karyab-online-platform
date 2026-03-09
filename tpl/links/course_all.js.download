@@ -1,0 +1,231 @@
+document.addEventListener('DOMContentLoaded', function () {
+    // --- STATE ---
+    let currentPage = parseInt(new URLSearchParams(window.location.search).get('page')) || 1;
+    let pageSize = 9;
+    let currentSort = 'popular';
+    let currentSearch = '';
+    let currentView = 'list';
+
+    // --- ELEMENTS ---
+    const displayArea = document.getElementById('courses-display-area');
+    const gridContainer = document.getElementById('course-grid');
+    const listContainer = document.getElementById('course-list');
+    const paginationContainer = document.getElementById('courses-pagination');
+    const searchInput = document.getElementById('course-search-input');
+    const sortByDropdownEl = document.getElementById('sort-by-dropdown');
+    const viewSwitcher = document.getElementById('view-switcher');
+    const noResultsContainer = document.getElementById('no-results-container');
+    const category = gridContainer.dataset.category;
+    const mainContentArea = document.querySelector('.course-list-main');
+    const schemaEl = document.getElementById('courses-itemlist-schema');
+    const discount = parseInt(displayArea.dataset.discount || '0');
+    const formatPrice = (n) => n.toLocaleString('fa-IR');
+
+    // --- RENDER FUNCTIONS ---
+    const renderCourseCard = (course) => {
+        const hasDiscount = discount > 0 && !course.isFree && course.price;
+        const finalPrice = hasDiscount ? course.price * (100 - discount) / 100 : course.price;
+        const priceHtml = course.isFree ? '<div class="free-course-badge">رایگان</div>' : `
+                                <div class="price-details">
+                                    <div class="price-final">${formatPrice(finalPrice)}<span> تومان</span></div>
+                                    ${hasDiscount ? `<div class="price-original">${formatPrice(course.price)}</div>` : ''}
+                                </div>`;
+        const discountBadge = hasDiscount ? `<div class="discount-badge">${discount}%</div>` : '';
+        const timerSection = hasDiscount ? `<div class="timer-section"><svg class="icon icon-clock" aria-hidden="true"><use xlink:href="#clock"></use></svg><div class="course-card-countdown"></div></div>` : '';
+        return `
+                <article class="course-card">
+                    <a href="/courses/${course.slug}" class="card-image-container">
+                        <img src="${course.coverImage}" alt="تصویر دوره ${course.title}" class="card-image">
+                        ${discountBadge}
+                    </a>
+                    <div class="card-body">
+                        <h3 class="course-title"><a href="/courses/${course.slug}">${course.title}</a></h3>
+                        <a href="/profiles/${course.instructorSlug || course.instructorId}" class="instructor-name">${course.instructor}</a>
+                    </div>
+                    <div class="card-footer">
+                        <div class="footer-inner-box">
+                            ${timerSection}
+                            ${priceHtml}
+                        </div>
+                    </div>
+                </article>
+            `;
+    };
+
+    const renderCourseListItem = (course) => {
+        const hasDiscount = discount > 0 && !course.isFree && course.price;
+        const finalPrice = hasDiscount ? course.price * (100 - discount) / 100 : course.price;
+        const priceHtml = course.isFree ? `<div class=\"free-course-badge\">رایگان</div>` : `
+                    <div>
+                        <span class=\"course-list-item__price-final\">${formatPrice(finalPrice)} تومان</span>
+                        ${hasDiscount ? `<span class=\"course-list-item__price-original\">${formatPrice(course.price)}</span>` : ''}
+                    </div>`;
+        const discountBadge = hasDiscount ? `<div class=\"course-list-item__discount-badge\">${discount}%</div>` : '';
+        const timerSection = hasDiscount ? `<div class=\"course-list-item__timer-section timer-section\"><div class=\"course-card-countdown\"></div><svg class=\"icon icon-clock\" aria-hidden=\"true\"><use xlink:href=\"#clock\"></use></svg></div>` : '';
+        return `
+                    <article class="course-list-item">
+                        <div class="course-list-item__image-container">
+                            <a href="/courses/${course.slug}">
+                                <img src="${course.coverImage}" alt="تصویر دوره ${course.title}" class="course-list-item__image">
+                                ${discountBadge}
+                            </a>
+                        </div>
+                        <div class="course-list-item__details">
+                            <h3 class="course-list-item__title"><a href="/courses/${course.slug}">${course.title}</a></h3>
+                            <p class="course-list-item__description">${course.shortDescription || ''}</p>
+                            <div class="course-list-item__meta">
+                                <span><svg class="icon icon-user-tie" aria-hidden="true"><use xlink:href="#user-tie"></use></svg><a href="/profiles/${course.instructorSlug || course.instructorId}">${course.instructor}</a></span>
+                                ${course.category ? `<span><svg class="icon icon-tag" aria-hidden="true"><use xlink:href="#tag"></use></svg>${course.category}</span>` : ''}
+                                ${course.duration ? `<span><svg class="icon icon-clock" aria-hidden="true"><use xlink:href="#clock"></use></svg>${course.duration}</span>` : ''}
+                            </div>
+                        </div>
+                        <div class="course-list-item__actions">
+                            <div>
+                                ${priceHtml}
+                                ${timerSection}
+                            </div>
+                            <a href="/courses/${course.slug}" class="btn btn-primary course-list-item__btn">شروع یادگیری</a>
+                        </div>
+                    </article>
+                `;
+    };
+
+    const updatePageInUrl = () => {
+        const params = new URLSearchParams(window.location.search);
+        if (currentPage > 1) {
+            params.set('page', currentPage);
+        } else {
+            params.delete('page');
+        }
+        const query = params.toString();
+        const newUrl = query ? `${window.location.pathname}?${query}` : window.location.pathname;
+        history.replaceState(null, '', newUrl);
+    };
+
+    const fetchAndRender = () => {
+        const spinner = new TosinsoSpinner({ target: mainContentArea });
+        spinner.show();
+
+        const params = new URLSearchParams({
+            page: currentPage,
+            pageSize: pageSize,
+            sort: currentSort,
+            search: currentSearch
+        });
+        if (category) params.append('category', category);
+
+        fetch(`/api/courses?${params.toString()}`)
+            .then(r => r.json())
+            .then(data => {
+                const items = data.items || [];
+                const totalItems = data.totalItems || 0;
+
+                if (items.length === 0 && totalItems === 0) {
+                    gridContainer.innerHTML = '';
+                    listContainer.innerHTML = '';
+                    paginationContainer.style.display = 'none';
+                    noResultsContainer.style.display = 'block';
+                    noResultsContainer.innerHTML = `
+                            <div class="no-results-message">
+                                <svg class="icon icon-search" aria-hidden="true"><use xlink:href="#search"></use></svg>
+                                <h3>موردی یافت نشد</h3>
+                                <p>متاسفانه هیچ دوره‌ای یافت نشد.</p>
+                            </div>
+                        `;
+                } else {
+                    paginationContainer.style.display = 'block';
+                    noResultsContainer.style.display = 'none';
+                    noResultsContainer.innerHTML = '';
+                    if (currentView === 'grid') {
+                        gridContainer.innerHTML = items.map(renderCourseCard).join('');
+                        listContainer.innerHTML = '';
+                    } else {
+                        listContainer.innerHTML = items.map(renderCourseListItem).join('');
+                        gridContainer.innerHTML = '';
+                    }
+                    if (window.setupCourseCardCountdowns) window.setupCourseCardCountdowns();
+                }
+
+                //if (schemaEl) {
+                //    if (items.length === 0) {
+                //        schemaEl.textContent = '';
+                //    } else {
+                //        const itemList = {
+                //            "@context": "https://schema.org",
+                //            "@type": "ItemList",
+                //            itemListElement: items.map((course, index) => ({
+                //                "@type": "ListItem",
+                //                position: (currentPage - 1) * pageSize + index + 1,
+                //                item: {
+                //                    "@type": "Course",
+                //                    "@id": `${window.location.origin}/courses/${course.slug}`,
+                //                    url: `${window.location.origin}/courses/${course.slug}`,
+                //                    name: course.title
+                //                }
+                //            }))
+                //        };
+                //        schemaEl.textContent = JSON.stringify(itemList);
+                //    }
+                //}
+
+                if (paginationContainer.TosinsoPagination) {
+                    paginationContainer.TosinsoPagination.options.totalItems = totalItems;
+                    paginationContainer.TosinsoPagination.options.currentPage = currentPage;
+                    paginationContainer.TosinsoPagination.totalPages = Math.ceil(totalItems / pageSize);
+                    paginationContainer.TosinsoPagination._render();
+                } else {
+                    paginationContainer.dataset.totalItems = totalItems;
+                    paginationContainer.dataset.pageSize = pageSize;
+                    paginationContainer.dataset.currentPage = currentPage;
+                    new TosinsoPagination(paginationContainer, { totalItems, pageSize, currentPage });
+                }
+
+                spinner.hide();
+            });
+    };
+
+    // --- EVENT LISTENERS ---
+    paginationContainer.addEventListener('pageChanged', (event) => {
+        currentPage = event.detail.newPage;
+        updatePageInUrl();
+        fetchAndRender();
+    });
+
+    if (sortByDropdownEl) {
+        const sortDropdown = new TosinsoDropdown(sortByDropdownEl, {
+            onSelect: (selectedValue) => {
+                currentPage = 1;
+                currentSort = selectedValue;
+                updatePageInUrl();
+                fetchAndRender();
+            }
+        });
+        sortDropdown.setValue('newest');
+    }
+
+    let searchTimeout;
+    searchInput.addEventListener('input', (e) => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            currentPage = 1;
+            currentSearch = e.target.value;
+            updatePageInUrl();
+            fetchAndRender();
+        }, 500);
+    });
+
+    viewSwitcher.addEventListener('click', (e) => {
+        const btn = e.target.closest('.view-btn');
+        if (!btn || btn.classList.contains('active')) return;
+        const newView = btn.dataset.view;
+        currentView = newView;
+        viewSwitcher.querySelector('.active').classList.remove('active');
+        btn.classList.add('active');
+        displayArea.className = `view-${newView}`;
+        fetchAndRender();
+    });
+
+    // --- INITIAL RENDER ---
+    updatePageInUrl();
+    fetchAndRender();
+});

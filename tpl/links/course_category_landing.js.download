@@ -1,0 +1,132 @@
+document.addEventListener('DOMContentLoaded', async function () {
+    // Calculate the end of the current day
+    const endOfToday = new Date();
+    endOfToday.setHours(23, 59, 59, 999);
+    const targetDateISO = endOfToday.toISOString();
+
+    // Find all countdown placeholders in the course cards
+    const countdownElements = document.querySelectorAll('.course-card-countdown');
+
+    // Initialize a countdown for each element
+    countdownElements.forEach(el => {
+        new TosinsoCountdown(el, {
+            targetDate: targetDateISO,
+        });
+    });
+
+    // Initialize the new Number Animator component
+    if (typeof TosinsoNumberAnimator !== 'undefined') {
+        TosinsoNumberAnimator.init();
+    }
+
+    // Initialize the Accordion component
+    if (typeof TosinsoAccordion !== 'undefined') {
+        TosinsoAccordion.init();
+    }
+
+    // MODIFICATION START: Initialize Form Builder for Consultation Form
+    const consultationFormColumn = document.querySelector('.consultation-form-column');
+    if (consultationFormColumn) {
+        // Initial render of the title and subtitle
+        consultationFormColumn.innerHTML = `
+                    <h3>مشاوره تخصصی رایگان در حوزه شبکه</h3>
+                    <p class="form-subtitle">مسیر یادگیری شبکه خود را با راهنمایی متخصصین ما آغاز کنید. فرم زیر را تکمیل کنید تا با شما تماس بگیریم.</p>
+                    <form id="consultation-form-container"></form>
+                `;
+        const formContainer = document.getElementById('consultation-form-container');
+
+        let categories = [];
+        try {
+            const res = await fetch('/api/consultations/categories');
+            if (res.ok) {
+                const data = await res.json();
+                categories = data.map(c => ({ value: c.id, text: c.title }));
+            }
+        } catch (e) {
+            console.error('Failed to load categories', e);
+        }
+
+        new TosinsoFormBuilder(formContainer, {
+            // Configure the action buttons for the form
+            actions: [{
+                type: 'submit',
+                text: 'ارسال درخواست مشاوره',
+                className: 'btn btn-primary btn-lg' // Use the original button's classes
+            }]
+        })
+            .addField({
+                type: 'text',
+                name: 'fullName',
+                label: 'نام و نام خانوادگی:',
+                placeholder: 'مثال: حسین احمدی',
+                validation: { rules: ['required'] }
+            })
+            .addField({
+                type: 'maskedText', // Use maskedText for better phone number input
+                name: 'phone',
+                label: 'شماره تماس:',
+                placeholder: 'مثال: ۰۹۱۲۳۴۵۶۷۸۹',
+                mask: '09999999999', // Mask for Iranian mobile numbers
+                validation: { rules: ['required', 'maskPattern'] }
+            })
+            .addField({
+                type: 'dropdown',
+                name: 'categoryId',
+                label: 'زمینه مورد علاقه برای یادگیری:',
+                source: 'js',
+                data: categories,
+                validation: { rules: ['required'] }
+            })
+            .addField({
+                type: 'textarea',
+                name: 'description',
+                label: 'توضیحات بیشتر (اختیاری):',
+                rows: 4,
+                placeholder: 'در مورد اهداف و علاقه‌مندی‌های خود بیشتر برای ما بنویسید...'
+            })
+            .onSubmit(async (formData) => {
+                try {
+                    await fetch('/api/consultations', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            fullName: formData.fullName,
+                            phone: formData.phone,
+                            categoryId: formData.categoryId,
+                            description: formData.description || ''
+                        })
+                    });
+                } catch (e) {
+                    console.error('Failed to submit consultation form', e);
+                    return;
+                }
+
+                if (consultationFormColumn) {
+                    // 1. Get the current height to prevent layout collapse
+                    const originalHeight = consultationFormColumn.offsetHeight;
+
+                    // 2. Set the min-height and apply flex properties for centering
+                    consultationFormColumn.style.minHeight = `${originalHeight}px`;
+                    consultationFormColumn.style.display = 'flex';
+                    consultationFormColumn.style.alignItems = 'center';
+                    consultationFormColumn.style.justifyContent = 'center';
+
+                    // 3. Replace the inner content with the success message
+                    consultationFormColumn.innerHTML = `
+                            <div style="text-align: center; padding: 20px 0;">
+                                <div style="font-size: 48px; color: var(--success-color); width: 80px; height: 80px; border-radius: 50%; background-color: #eafaf1; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                                    <svg class="icon icon-check-circle" aria-hidden="true"><use xlink:href="#check-circle"></use></svg>
+                                </div>
+                                <h4 style="font-family: 'PinarBold', sans-serif; font-size: 1.4rem; margin-bottom: 10px;">درخواست شما با موفقیت ثبت شد</h4>
+                                <p style="color: var(--dark-gray-color); font-size: 1rem; line-height: 1.7;">
+                                    متشکریم! کارشناسان ما به زودی برای هماهنگی جلسه مشاوره با شما تماس خواهند گرفت.
+                                </p>
+                            </div>
+                        `;
+                }
+            })
+            .withCaptcha(true)
+            .build(); // This finalizes and renders the form
+    }
+    // MODIFICATION END
+});

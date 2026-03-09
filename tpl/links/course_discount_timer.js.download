@@ -1,0 +1,24 @@
+function setupCourseCardCountdowns() {
+    const initCountdown = (el) => {
+        const computeEndOfDay = () => {
+            const d = new Date();
+            d.setHours(23, 59, 59, 999);
+            return d.toISOString();
+        };
+        const start = () => {
+            new TosinsoCountdown(el, {
+                targetDate: computeEndOfDay(),
+                customClass: el.dataset.customClass || '',
+                onComplete: () => start()
+            });
+        };
+        start();
+    };
+
+    document.querySelectorAll('.course-card-countdown').forEach(el => {
+        if (!el.TosinsoCountdown) initCountdown(el);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', setupCourseCardCountdowns);
+window.setupCourseCardCountdowns = setupCourseCardCountdowns;
